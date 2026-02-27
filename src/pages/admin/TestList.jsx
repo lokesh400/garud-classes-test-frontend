@@ -63,7 +63,7 @@ const TestList = () => {
         <h1 className="text-3xl font-bold text-gray-800">Tests</h1>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="flex items-center gap-2 px-4 py-2 bg-garud-highlight text-white rounded-lg hover:bg-red-600 transition"
+          className="flex items-center gap-2 px-4 py-2 bg-transparent border border-garud-highlight text-garud-highlight rounded-lg hover:bg-gray-100 hover:text-garud-highlight transition"
         >
           <FiPlus /> Create Test
         </button>
@@ -190,7 +190,7 @@ const TestList = () => {
                   </button>
                   <button
                     onClick={() => deleteTest(test._id)}
-                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                    className="p-2 text-garud-highlight hover:bg-gray-100 rounded-lg transition"
                     title="Delete"
                   >
                     <FiTrash2 />

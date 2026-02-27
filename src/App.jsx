@@ -1,7 +1,7 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Navbar from './components/Navbar';
+import Sidebar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
@@ -15,11 +15,15 @@ import QuestionUpload from './pages/admin/QuestionUpload';
 import TestList from './pages/admin/TestList';
 import TestCreator from './pages/admin/TestCreator';
 import TestResults from './pages/admin/TestResults';
+import TestSeriesList from './pages/admin/TestSeriesList';
+import TestSeriesManager from './pages/admin/TestSeriesManager';
 
 // Student Pages
 import StudentDashboard from './pages/student/Dashboard';
 import TestAttempt from './pages/student/TestAttempt';
 import Results from './pages/student/Results';
+import TestSeriesView from './pages/student/TestSeriesView';
+import PurchaseTestSeries from './pages/student/PurchaseTestSeries';
 
 const HomeRedirect = () => {
   const { user, loading } = useAuth();
@@ -37,12 +41,33 @@ const HomeRedirect = () => {
   return <Navigate to="/student/dashboard" replace />;
 };
 
+const AppLayout = ({ children }) => {
+  const { user } = useAuth();
+  const location = useLocation();
+
+  // Full-screen pages: no sidebar (test attempt, login, register)
+  const isFullScreen = location.pathname.startsWith('/student/test/');
+
+  if (!user || isFullScreen) {
+    return <div className="min-h-screen bg-gray-50 text-gray-900">{children}</div>;
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 text-gray-900">
+      <Sidebar />
+      {/* Main content: offset on desktop, offset top on mobile */}
+      <div className="md:ml-60 pt-14 md:pt-0 min-h-screen">
+        {children}
+      </div>
+    </div>
+  );
+};
+
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <div className="min-h-screen bg-gray-100">
-          <Navbar />
+        <AppLayout>
           <Routes>
             {/* Public */}
             <Route path="/login" element={<Login />} />
@@ -101,6 +126,23 @@ function App() {
               }
             />
 
+            <Route
+              path="/admin/test-series"
+              element={
+                <ProtectedRoute role="admin">
+                  <TestSeriesList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/test-series/:seriesId"
+              element={
+                <ProtectedRoute role="admin">
+                  <TestSeriesManager />
+                </ProtectedRoute>
+              }
+            />
+
             {/* Student Routes */}
             <Route
               path="/student/dashboard"
@@ -127,6 +169,14 @@ function App() {
               }
             />
             <Route
+              path="/student/test-series/:seriesId"
+              element={
+                <ProtectedRoute role="student">
+                  <TestSeriesView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/student/results/:testId"
               element={
                 <ProtectedRoute role="student">
@@ -134,11 +184,19 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/student/purchase-series"
+              element={
+                <ProtectedRoute role="student">
+                  <PurchaseTestSeries />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Catch all */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </div>
+        </AppLayout>
         <Toaster
           position="top-right"
           toastOptions={{

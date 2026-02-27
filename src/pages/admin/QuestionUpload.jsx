@@ -288,7 +288,7 @@ const QuestionUpload = () => {
             <button
               type="submit"
               disabled={uploading}
-              className="w-full py-3 bg-garud-highlight text-white font-semibold rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-3 bg-transparent border border-garud-highlight text-garud-highlight font-semibold rounded-lg hover:bg-gray-100 hover:text-garud-highlight transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
               <FiUploadCloud className="w-5 h-5" />
               {uploading ? 'Uploading...' : 'Upload Question'}

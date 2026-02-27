@@ -224,13 +224,13 @@ const TestCreator = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => setShowPicker(showPicker === section._id ? null : section._id)}
-                  className="flex items-center gap-1 px-3 py-1.5 text-sm bg-garud-highlight text-white rounded-lg hover:bg-red-600 transition"
+                  className="flex items-center gap-1 px-3 py-1.5 text-sm bg-transparent border border-garud-highlight text-garud-highlight rounded-lg hover:bg-gray-100 hover:text-garud-highlight transition"
                 >
                   <FiPlus /> Add Questions
                 </button>
                 <button
                   onClick={() => removeSection(section._id)}
-                  className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition"
+                  className="p-1.5 text-garud-highlight hover:bg-gray-100 rounded-lg transition"
                 >
                   <FiTrash2 />
                 </button>
